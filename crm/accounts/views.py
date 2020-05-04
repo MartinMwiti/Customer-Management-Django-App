@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from .models import *
 from .forms import *
 from django.forms import inlineformset_factory # helps with creating multiple forms within one form
+from .filters import OrderFilter
 
 
 def home(request):
@@ -31,8 +32,11 @@ def customers(request, pk):
     orders = customer.order_set.all()
     orders_count = orders.count()
 
+    myFilter = OrderFilter(request.GET, queryset=orders)
+    orders = myFilter.qs
+
     context = {"customer": customer,
-               "orders": orders, "orders_count": orders_count}
+               "orders": orders, "orders_count": orders_count, "myFilter": myFilter}
     return render(request, 'accounts/customers.html', context)
 
 
@@ -66,7 +70,7 @@ def updateOrder(request,pk):
             return redirect('/')
 
     context = {"form": form}
-    return render(request, 'accounts/order_form.html', context)
+    return render(request, 'accounts/update_order.html', context)
 
 
 def deleteOrder(request, pk):

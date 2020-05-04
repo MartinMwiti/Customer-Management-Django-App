@@ -40,6 +40,7 @@ INSTALLED_APPS = [
 
     'accounts',
     'crispy_forms',
+    'django_filters',
 ]
 
 MIDDLEWARE = [
