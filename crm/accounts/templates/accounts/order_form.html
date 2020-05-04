@@ -5,7 +5,11 @@
 {% block content %}
 <form action="" method="POST">
     {% csrf_token %}
-    {{form | crispy}}
+    {{ formset.management_form }}
+    {% for form in formset %}
+    {{form}}
+    <hr>
+    {% endfor %}   
     <button type="submit" class="btn btn-primary">Submit</button>
 </form>
 

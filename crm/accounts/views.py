@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect
 from .models import *
 from .forms import *
+from django.forms import inlineformset_factory # helps with creating multiple forms within one form
+
 
 def home(request):
     orders = Order.objects.all()
@@ -34,24 +36,27 @@ def customers(request, pk):
     return render(request, 'accounts/customers.html', context)
 
 
-def createOrder(request):
-
-    form = OrderForm()
+def createOrder(request, pk):
+    OrderFormSet = inlineformset_factory(Customer, Order, fields=("product", "status"), extra=3) # extra specifies the number of forms to display 
+    customer = Customer.objects.get(id=pk)
+    formset = OrderFormSet(queryset=Order.objects.none(),instance=customer)
+    # form = OrderForm(initial={'customer': customer})
     if request.method == 'POST':
         #print('Printing Post', request.POST)
-        form = OrderForm(request.POST) # If the data passed is POST, pass in the POST data i.e fill the form object with the POST data
-        if form.is_valid():
-            form.save()
+        # form = OrderForm(request.POST) # If the data passed is POST, pass in the POST data i.e fill the form object with the POST data
+        formset = OrderFormSet(request.POST, instance=customer)
+        if formset.is_valid():
+            formset.save()
             return redirect('/')
 
-    context = {"form":form}
+    context = {"formset":formset}
     return render(request, 'accounts/order_form.html', context)
 
 
 def updateOrder(request,pk):
 
     order = Order.objects.get(id=pk)
-    form = OrderForm(instance=order) # populate with data
+    form = OrderForm(instance=order) # populate all fields with data
 
     # makes sure the changes are saved
     if request.method == 'POST': 
@@ -66,9 +71,10 @@ def updateOrder(request,pk):
 
 def deleteOrder(request, pk):
     order = Order.objects.get(id=pk)
-    
+
     if request.method=="POST":
         order.delete()
         return redirect('/')
     context = {"item":order}
+
     return render(request, 'accounts/delete.html', context)
