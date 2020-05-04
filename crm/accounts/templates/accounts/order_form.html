@@ -7,7 +7,7 @@
     {% csrf_token %}
     {{ formset.management_form }}
     {% for form in formset %}
-    {{form}}
+    {{form | crispy }}
     <hr>
     {% endfor %}   
     <button type="submit" class="btn btn-primary">Submit</button>
