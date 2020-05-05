@@ -102,6 +102,23 @@ def createCustomer(request):
     return render(request, 'accounts/new_customer.html', {'form': form})
 
 
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['admin'])
+def updateCustomer(request, pk):
+
+    customer = Customer.objects.get(id=pk)
+    form = NewCustomerForm(instance=customer)  # populate all fields with data
+
+    if request.method == 'POST':
+        form = NewCustomerForm(request.POST, instance=customer)
+        if form.is_valid():
+            form.save()
+            return redirect('/')
+
+    context = {"form": form}
+    return render(request, 'accounts/update_customer.html', context)
+
+
 
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['admin'])
