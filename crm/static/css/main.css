@@ -1,8 +1,14 @@
 /* #logo {} */
 
+/*.container a, .container a:visited {
+    color: #C25100;
+} */
+
+
 body {
     background-color: #ebeff5;
 }
+
 
 
 #total-orders {
@@ -17,3 +23,4 @@ body {
 #orders-pending {
     background-color: #7CD1C0;
 }
+

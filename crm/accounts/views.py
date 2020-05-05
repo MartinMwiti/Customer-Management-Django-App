@@ -4,6 +4,8 @@ from .forms import *
 from django.forms import inlineformset_factory # helps with creating multiple forms within one form
 from .filters import OrderFilter
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib import messages
+from django.contrib.auth import authenticate, login, logout
 
 
 def registerPage(request):
@@ -13,7 +15,9 @@ def registerPage(request):
         form = UserRegisterForm(request.POST)  # PASS IN THE POST DATA
         if form.is_valid():
             form.save()
-            return redirect('/')
+            user = form.cleaned_data.get('username')
+            messages.success(request, 'Account was created for ' +user)
+            return redirect('login')
 
     context = {"form": form}
     return render(request, 'accounts/register.html', context)
