@@ -88,6 +88,19 @@ def products(request):
     return render(request, 'accounts/products.html', {'products': products})
 
 
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['admin'])
+def createCustomer(request):
+    if request.method == 'POST':
+        form = NewCustomerForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, f'New customer has been created')
+            return redirect('home')
+    else: 
+        form = NewCustomerForm()
+    return render(request, 'accounts/new_customer.html', {'form': form})
+
 
 
 @login_required(login_url='login')
