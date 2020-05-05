@@ -25,6 +25,9 @@ def registerPage(request):
 
             group = Group.objects.get(name='customer')
             user.groups.add(group) # Associate a new user with the 'customer' account Group
+            Customer.objects.create(
+                user=user
+            ) # make sure when a new user registers, he/she is linked to customer profile.
 
             messages.success(request, 'Account was created for ' +username)
             return redirect('login')
@@ -74,9 +77,20 @@ def home(request):
     return render(request, 'accounts/dashboard.html', context)
 
 
+
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['customer'])
 def userPage(request):
-    context = {}
+    orders = request.user.customer.order_set.all() # applying the 'User' onetoone relationship with 'Customer'
+    
+    total_orders = orders.count()
+    delivered = orders.filter(status='Delivered').count()
+    pending = orders.filter(status='Pending').count()
+
+    context = {"orders": orders, "total_orders": total_orders,
+               "delivered": delivered, "pending": pending}
     return render(request, 'accounts/user.html', context)
+
 
 
 @login_required(login_url='login')

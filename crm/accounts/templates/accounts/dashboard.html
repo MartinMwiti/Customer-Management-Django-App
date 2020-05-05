@@ -4,6 +4,12 @@
 
 {%  include 'accounts/status.html' %}
 
+<style>
+.table-responsive {
+    max-height:320px;
+    }
+</style>
+
 <br>
 
 <div class="row">
@@ -21,7 +27,7 @@
                 </tr>
                 {% for customer in customers %}
                 <tr>
-                    <td>{{ customer.name }}</td>
+                    <td>{{ customer.user }}</td>
                     <td>{{ customer.phone }}</td>
                     <td><a class="btn btn-sm btn-info" href="{% url 'customers' customer.id%}">View</a></td>                   
                 </tr>
@@ -34,8 +40,8 @@
     <div class="col-md-7">
         <h5>LAST 5 ORDERS</h5>
         <hr>
-        <div class="card card-body">
-            <table class="table table-hover table-dark">
+        <div class="card card-body" style="background-color: #ffff;">
+            <table class="table table-hover table-dark table-responsive">
                 <tr>
                     <th>Product</th>
                     <th>Date Ordered</th>
