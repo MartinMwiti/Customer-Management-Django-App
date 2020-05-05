@@ -1,5 +1,11 @@
 {% load static %} <!--required for loading the logo-->
 
+<style>
+    #hello-msg{   
+        color: #fff;
+    }
+</style>
+
 <nav class="navbar navbar sticky-top navbar-expand-lg navbar-dark bg-dark">
 <div class="container">
     <a class="navbar-brand" href="{% url 'home' %}">Martin</a>
@@ -18,9 +24,13 @@
 
         <!-- Navbar Right Side -->
         <div class="navbar-nav">
-            <!--i.e is already logged out. Display links for login & register-->
+        {% if user.is_authenticated %}
+            <span class="nav-item nav-link" id="hello-msg">Hello, {{request.user}}</span>
+            <a class="nav-item nav-link" href="{% url 'logout' %}">Logout</a>
+        {% else %}
             <a class="nav-item nav-link" href="{% url 'login' %}">Login</a>
             <a class="nav-item nav-link" href="{% url 'register' %}">Register</a>
+        {% endif %}
         </div>
     </div>
 
