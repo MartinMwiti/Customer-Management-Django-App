@@ -3,6 +3,27 @@ from .models import *
 from .forms import *
 from django.forms import inlineformset_factory # helps with creating multiple forms within one form
 from .filters import OrderFilter
+from django.contrib.auth.forms import UserCreationForm
+
+
+def registerPage(request):
+    form = UserRegisterForm()
+
+    if request.method=='POST':
+        form = UserRegisterForm(request.POST)  # PASS IN THE POST DATA
+        if form.is_valid():
+            form.save()
+            return redirect('/')
+
+    context = {"form": form}
+    return render(request, 'accounts/register.html', context)
+
+
+
+def loginPage(request):
+    context = {}
+    return render(request, 'accounts/login.html', context)
+
 
 
 def home(request):
