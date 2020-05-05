@@ -14,11 +14,10 @@ class UserRegisterForm(UserCreationForm):
         fields = ['username', 'email', 'password1', 'password2']
 
 
-
 class OrderForm(ModelForm):
-    class Meta:
-        model = Order
-        fields = '__all__' # use all fields
+	class Meta:
+	    model = Order
+	    fields = '__all__'
 
 
 
@@ -27,3 +26,8 @@ class NewCustomerForm(ModelForm):
         model = Customer
         fields = '__all__'
         
+
+class UpdateOrderForm(ModelForm):
+	class Meta:
+	    model = Order
+	    fields = ['product', 'status']

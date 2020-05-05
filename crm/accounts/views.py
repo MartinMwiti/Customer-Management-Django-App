@@ -165,7 +165,7 @@ def createOrder(request, pk):
         formset = OrderFormSet(request.POST, instance=customer)
         if formset.is_valid():
             formset.save()
-            return redirect('/')
+            return redirect('home')
 
     context = {"formset":formset}
     return render(request, 'accounts/order_form.html', context)
@@ -173,20 +173,19 @@ def createOrder(request, pk):
 
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['admin'])
-def updateOrder(request,pk):
+def updateOrder(request, pk):
 
-    order = Order.objects.get(id=pk)
-    form = OrderForm(instance=order) # populate all fields with data
+	order = Order.objects.get(id=pk)
+	form = UpdateOrderForm(instance=order)
 
-    # makes sure the changes are saved
-    if request.method == 'POST': 
-        form = OrderForm(request.POST, instance=order) # takes the POST data and update the instance
-        if form.is_valid():
-            form.save()
-            return redirect('/')
+	if request.method == 'POST':
+            form = UpdateOrderForm(request.POST, instance=order)
+            if form.is_valid():
+                form.save()
+                return redirect('home')
 
-    context = {"form": form}
-    return render(request, 'accounts/update_order.html', context)
+	context = {'form': form}
+	return render(request, 'accounts/update_order.html', context)
 
 
 @login_required(login_url='login')
