@@ -21,13 +21,7 @@ def registerPage(request):
         form = UserRegisterForm(request.POST)  # PASS IN THE POST DATA
         if form.is_valid():
             user = form.save()
-            username = form.cleaned_data.get('username')
-
-            group = Group.objects.get(name='customer')
-            user.groups.add(group) # Associate a new user with the 'customer' account Group
-            Customer.objects.create(
-                user=user
-            ) # make sure when a new user registers, he/she is linked to customer profile.
+            username = form.cleaned_data.get('username') # code continue to run from this point after running func in signals.py
 
             messages.success(request, 'Account was created for ' +username)
             return redirect('login')
