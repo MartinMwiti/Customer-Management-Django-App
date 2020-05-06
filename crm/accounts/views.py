@@ -95,20 +95,26 @@ def userPage(request):
 
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['customer'])
-def accountSettings(request):
-	customer = request.user.customer
-	form = CustomerForm(instance=customer)
+def accountSettings(request): # USER/CUTOMER PROFILE UPDATE
+    if request.method == 'POST': # WORKING WITH TWO RELATED FORMS(USER, CUSTOMER)
+        u_form = UserUpdateForm(request.POST, instance=request.user)
+        p_form = ProfileUpdateForm(
+            request.POST, request.FILES, instance=request.user.customer)
 
-	if request.method == 'POST':
-            form = CustomerForm(request.POST, request.FILES, instance=customer) # we want the data and files coming with it
-            if form.is_valid():
-                form.save()
-                messages.success(request, f'Your profile has been updated.')
-                return redirect('user-page')
+        if u_form.is_valid() and p_form.is_valid():
+            u_form.save()
+            p_form.save()
+            messages.success(request, f'Your account has been updated!')
+            return redirect('user-page')
+    else: # populate fields with data
+        u_form = UserUpdateForm(instance=request.user)
+        p_form = ProfileUpdateForm(instance=request.user.customer)
 
-	context = {'form': form}
-	return render(request, 'accounts/account_settings.html', context)
-
+    context = {
+        'u_form': u_form,
+        'p_form': p_form
+    }
+    return render(request, 'accounts/account_settings.html', context)
 
 
 

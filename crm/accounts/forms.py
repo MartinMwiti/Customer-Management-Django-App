@@ -14,27 +14,40 @@ class UserRegisterForm(UserCreationForm):
         fields = ['username', 'email', 'password1', 'password2']
 
 
-class OrderForm(ModelForm):
-	class Meta:
-	    model = Order
-	    fields = '__all__'
+
+class UserUpdateForm(forms.ModelForm):  # Allow us to update user email
+    email = forms.EmailField()
+
+    class Meta:
+        model = User
+        fields = ['username', 'email']
 
 
-class CustomerForm(ModelForm):
-	class Meta:
-            model = Customer
-            fields = '__all__'
-            exclude = ['user']
-
+class ProfileUpdateForm(forms.ModelForm):  # Allow us to update profile image
+    class Meta:
+        model = Customer
+        fields = ['phone', 'profile_pic']
 
 
 class NewCustomerForm(ModelForm):
     class Meta:
         model = Customer
         fields = '__all__'
-        
+
+
+
+
+class OrderForm(ModelForm):
+	class Meta:
+	    model = Order
+	    fields = '__all__'
+      
 
 class UpdateOrderForm(ModelForm):
 	class Meta:
 	    model = Order
 	    fields = ['product', 'status']
+
+
+
+
