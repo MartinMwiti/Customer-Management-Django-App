@@ -21,6 +21,8 @@
             {% if request.user.is_staff %} <!--If a user is customer/staff hide else display for admin Group users-->
                 <a class="nav-item nav-link" href="{% url 'home' %}">Dashboard</a>
                 <a class="nav-item nav-link" href="{% url 'products' %}">Products</a>
+            {% else %}
+                <a class="nav-item nav-link" href="{% url 'account' %}">Settings</a>
             {% endif %}
         </div>
 

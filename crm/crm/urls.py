@@ -16,7 +16,13 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
+from django.conf.urls.static import static
+from django.conf import settings
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('accounts.urls')),
 ]
+
+# helps view images in the folder using url 'http://localhost:8000/images/man_silhoutte.jpg' [NOT RECOMMENDED FOR PRODUCTION, instead use AWS Storage for static files]
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

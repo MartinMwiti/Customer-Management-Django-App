@@ -20,6 +20,13 @@ class OrderForm(ModelForm):
 	    fields = '__all__'
 
 
+class CustomerForm(ModelForm):
+	class Meta:
+            model = Customer
+            fields = '__all__'
+            exclude = ['user']
+
+
 
 class NewCustomerForm(ModelForm):
     class Meta:
