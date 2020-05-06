@@ -28,7 +28,7 @@
     <div class="col-md-9">
         <div class="card card-body">
 
-            <form method="POST" action="" enctype="multipart/form-data">
+            <form method="POST" action="" enctype="multipart/form-data"> <!--use multipart/form-data when your form includes any <input type="file"> elements-->
                 {% csrf_token %}
                 {{form | crispy}}
 

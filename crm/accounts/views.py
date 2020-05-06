@@ -100,9 +100,11 @@ def accountSettings(request):
 	form = CustomerForm(instance=customer)
 
 	if request.method == 'POST':
-            form = CustomerForm(request.POST, request.FILES, instance=customer)
+            form = CustomerForm(request.POST, request.FILES, instance=customer) # we want the data and files coming with it
             if form.is_valid():
                 form.save()
+                messages.success(request, f'Your profile has been updated.')
+                return redirect('user-page')
 
 	context = {'form': form}
 	return render(request, 'accounts/account_settings.html', context)
