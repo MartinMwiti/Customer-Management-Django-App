@@ -29,18 +29,6 @@ class ProfileUpdateForm(forms.ModelForm):  # Allow us to update profile image
         fields = ['phone', 'profile_pic']
 
 
-class NewCustomerForm(ModelForm):
-    class Meta:
-        model = Customer
-        fields = '__all__'
-
-
-
-
-class OrderForm(ModelForm):
-	class Meta:
-	    model = Order
-	    fields = '__all__'
       
 
 class UpdateOrderForm(ModelForm):

@@ -121,37 +121,6 @@ def products(request):
     return render(request, 'accounts/products.html', {'products': products})
 
 
-@login_required(login_url='login')
-@allowed_users(allowed_roles=['admin'])
-def createCustomer(request):
-    if request.method == 'POST':
-        form = NewCustomerForm(request.POST)
-        if form.is_valid():
-            form.save()
-            messages.success(request, f'New customer has been created')
-            return redirect('home')
-    else: 
-        form = NewCustomerForm()
-    return render(request, 'accounts/new_customer.html', {'form': form})
-
-
-@login_required(login_url='login')
-@allowed_users(allowed_roles=['admin'])
-def updateCustomer(request, pk):
-
-    customer = Customer.objects.get(id=pk)
-    form = NewCustomerForm(instance=customer)  # populate all fields with data
-
-    if request.method == 'POST':
-        form = NewCustomerForm(request.POST, instance=customer)
-        if form.is_valid():
-            form.save()
-            return redirect('/')
-
-    context = {"form": form}
-    return render(request, 'accounts/update_customer.html', context)
-
-
 
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['admin'])
@@ -186,7 +155,7 @@ def createOrder(request, pk):
             formset.save()
             return redirect('home')
 
-    context = {"formset":formset}
+    context = {"form":formset}
     return render(request, 'accounts/order_form.html', context)
 
 
@@ -201,7 +170,7 @@ def updateOrder(request, pk):
             form = UpdateOrderForm(request.POST, instance=order)
             if form.is_valid():
                 form.save()
-                return redirect('home')
+                return redirect('/')
 
 	context = {'form': form}
 	return render(request, 'accounts/update_order.html', context)
