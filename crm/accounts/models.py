@@ -7,10 +7,11 @@ class Customer(models.Model):
     name = models.CharField(max_length=200, null=True)
     phone = models.CharField(max_length=200, null=True)
     email = models.CharField(max_length=200, null=True)
+    profile_pic = models.ImageField(null=True, blank=True)
     date_created = models.DateTimeField(auto_now_add=True, null=True)
 
     def __str__(self): # to see customer name instead of seeing 'customer object func'
-        return self.name
+        return str(self.name)
 
 
 class Tag(models.Model):
