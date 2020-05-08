@@ -21,13 +21,13 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-#SECRET_KEY = 'hr!eyui690y74&w9k9@rtloeoywb#--1^j3@9(hivs@vs66a0c'
+# SECRET_KEY = 'hr!eyui690y74&w9k9@rtloeoywb#--1^j3@9(hivs@vs66a0c'
 SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = (os.environ.get('DEBUG_VALUE') == 'True')
 
-ALLOWED_HOSTS = ['martin-django-crm.herokuapp.com']
+ALLOWED_HOSTS = ['martin-crm-django.herokuapp.com']
 
 
 # Application definition
@@ -123,20 +123,29 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles') # needed by heroku
 STATIC_URL = '/static/'
 
-MEDIA_URL = '/images/'
 
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static')
-]
+# The MEDIA_ROOT is the path on the filesystem to the directory containing your static media.
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media/images')
+MEDIA_URL = '/images/'  # transalates to http://myapp/media/images/default.png
+# The MEDIA_URL is the URL that makes the static media accessible over HTTP.
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'static/images')
+
+
+# STATICFILES_DIRS = [
+#     os.path.join(BASE_DIR, 'static')
+# ]
+
+'''
+STATICFILES_DIRS: You can keep the static files for your project here e.g. the ones used by your templates.
+
+STATIC_ROOT: leave this empty, when you do manage.py collectstatic, it will search for all the static files on your system and move them here. Your static file server is supposed to be mapped to this folder wherever it is located. 
+'''
 
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
-
 
 
 # sending email for password reset
@@ -156,7 +165,6 @@ AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME')
 AWS_S3_FILE_OVERWRITE = False 
 AWS_DEFAULT_ACL = None
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-
 
 
 django_heroku.settings(locals())
