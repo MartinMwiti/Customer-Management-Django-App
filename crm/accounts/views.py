@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
-from .models import *
-from .forms import *
+from .models import Customer, Tag, Product, Order
+from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm, UpdateOrderForm
 from django.forms import inlineformset_factory # helps with creating multiple forms within one form
 from .filters import OrderFilter
 
@@ -10,7 +10,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 # from django.contrib.auth.models import Group
 
-from .decorators import *
+from .decorators import unathenticated_user, allowed_users, admin_only
 
 
 @unathenticated_user
