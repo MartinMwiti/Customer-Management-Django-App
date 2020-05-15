@@ -8,7 +8,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-# from django.contrib.auth.models import Group
+from django.contrib.auth.models import Group
 
 from .decorators import unathenticated_user, allowed_users, admin_only
 
@@ -21,7 +21,14 @@ def registerPage(request):
         form = UserRegisterForm(request.POST)  # PASS IN THE POST DATA
         if form.is_valid():
             user = form.save()
-            username = form.cleaned_data.get('username') # code continue to run from this point after running func in signals.py
+            username = form.cleaned_data.get('username')
+            
+            group = Group.objects.get(name='customer')
+            user.groups.add(group) # Associate a new user with the 'customer' account Group
+            Customer.objects.create(
+                user=user,
+                name = user.username
+            )           
 
             messages.success(request, 'Account was created for ' +username)
             return redirect('login')
