@@ -12,6 +12,8 @@ from django.contrib.auth.models import Group
 
 from .decorators import unathenticated_user, allowed_users, admin_only
 
+from django.core.paginator import Paginator
+
 
 @unathenticated_user
 def registerPage(request):
@@ -71,6 +73,16 @@ def home(request):
     total_orders = orders.count()
     delivered = orders.filter(status='Delivered').count()
     pending = orders.filter(status='Pending').count()
+
+    # Customer table pagination
+    page = request.GET.get('page', 1)
+    paginator = Paginator(customers, 4)
+    customers = paginator.page(page)
+
+    # order table pagination
+    paginator = Paginator(orders, 3)
+    orders = paginator.page(page)
+
 
     context = {'orders': orders, 'customers': customers,
                "total_orders": total_orders, "delivered": delivered, "pending": pending}

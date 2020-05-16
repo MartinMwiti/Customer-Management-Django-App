@@ -5,9 +5,53 @@
 {%  include 'accounts/status.html' %}
 
 <style>
-.table-responsive {
-    max-height:320px;
-    }
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,600);
+
+*, *:before, *:after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: #105469;
+  font-family: 'Open Sans', sans-serif;
+}
+table {
+  background: #012B39;
+  border-radius: 0.25em;
+  border-collapse: collapse;
+  margin: 1em;
+}
+th {
+  border-bottom: 1px solid #364043;
+  color: #E2B842;
+  font-size: 0.85em;
+  font-weight: 600;
+  padding: 0.5em 1em;
+  text-align: left;
+}
+td {
+  color: #fff;
+  font-weight: 400;
+  padding: 0.65em 1em;
+}
+.disabled td {
+  color: #4F5F64;
+}
+tbody tr {
+  transition: background 0.25s ease;
+}
+tbody tr:hover {
+  background: #014055;
+}
+
+h5{
+   color: #E2B842;
+   font-weight: 600;
+
+}
+
 </style>
 
 <br>
@@ -17,52 +61,111 @@
     <div class="col-md-5">
         <h5>CUSTOMERS</h5>
         <hr>
-        <div class="card card-body" style="background-color: #F9F9F9;">
-            <table class="table table-responsive table-borderless table-hover" style="background-color: #F9F9F9;">
-                <tr>                   
-                    <th>Customer</th>
-                    <th></th>
-                    <th>Phone</th>
-                    <th></th>
-                </tr>
+        <div class="card card-body" style="background-color: #012B39; height:fit-content">
+            <table>
+                    <thead>
+                    <tr>
+                        <th>Customer</th>
+                        <th></th>
+                        <th>Phone</th>
+                        <th></th>
+                    </thead>                                      
+                <tbody>
                 {% for customer in customers %}
-                <tr>
+                <tbody>
+                    <tr>
                     <td>{{ customer.user }}</td>
                     <td></td>
                     <td>{{ customer.phone }}</td>
                     <td></td>
-                    <td><a class="btn btn-sm btn-info" href="{% url 'customers' customer.id%}">View</a></td>                   
-                </tr>
+                    <td><a class="btn btn-sm btn-info" href="{% url 'customers' customer.id%}" style="width: 80px;">View</a></td>                   
+                </tbody>
+                {% endfor %}
+                
+            </table>
+            
+            <!-- CUSTOMERS TABLE PAGINATION -->
+            {% if customers.has_other_pages %}
+              <ul class="pagination justify-content-center">
+
+                {% if customers.has_previous %}
+                  <li class="page-item"><a class="page-link" href="?page=1">First</a></li>
+                  <li class="page-item"><a class="page-link" href="?page={{ customers.previous_page_number }}">Previous</a></li>
+                {% endif %}
+
+                {% for i in customers.paginator.page_range %}
+                  {% if customers.number == num %}
+                    <li class="page-item active"><span class="page-link">{{ num }} <span class="sr-only">(current)</span></span></li>
+                  {% elif num > customers.number|add:'-1' and num < customers.number|add:'1' %}
+                    <a class="page-item" href="?page={{ num }}">{{ num }}</a>
+                  {% endif %}
                 {% endfor %}
 
-            </table>
+                {% if customers.has_next %}
+                  <li class="page-item"><a class="page-link" href="?page={{ customers.next_page_number }}">Next</a></li>
+                  <li class="page-item"><a class="page-link" href="?page={{ customers.paginator.num_pages }}">Last</a></li>
+                {% endif %}   
+                
+              </ul>
+            {% endif %}
+
+
         </div>
     </div>
+
 
     <div class="col-md-7">
         <h5>ORDERS</h5>
         <hr>
-        <div class="card card-body" style="background-color: #F9F9F9;">
-            <table class="table table-hover table-borderless table-responsive" style="background-color: #F9F9F9;">
+        <div class="card card-body" style="background-color: #012B39;">
+            <table>
+                <thead>               
                 <tr>
                     <th>Product</th>
                     <th>Date Ordered</th>
                     <th>Status</th>
                     <th>Update</th>
                     <th>Remove</th>
-                </tr>
+                </thead>
 
                 {% for order in orders %}
+                <tbody>               
                 <tr>
                     <td>{{ order.product }}</td>
-                    <td>{{ order.date_created }}</td>
+                    <td>{{ order.date_created | date:"H:i a F d" }}</td>
                     <td>{{ order.status }}</td>
                     <td><a class="btn btn-sm btn-info" href="{% url 'update_order' order.id %}">Update</a></td>
                     <td><a class="btn btn-sm btn-danger" href="{% url 'delete_order' order.id %}">Delete</a></td>
-                </tr>
+                </tbody>
                 {% endfor %}
 
             </table>
+
+          <!-- ORDERS TABLE PAGINATION -->
+          {% if orders.has_other_pages %}           
+            <ul class="pagination justify-content-center">
+            
+              {% if orders.has_previous %}
+                <li class="page-item"><a class="page-link" href="?page=1">First</a></li>
+                <li class="page-item"><a class="page-link" href="?page={{ orders.previous_page_number }}">Previous</a></li>
+              {% endif %}
+            
+              {% for i in orders.paginator.page_range %}
+                {% if orders.number == num %}
+                  <li class="page-item active"><span class="page-link">{{ num }} <span class="sr-only">(current)</span></span></li>
+                {% elif num > orders.number|add:'-1' and num < orders.number|add:'1' %}
+                  <a class="page-item" href="?page={{ num }}">{{ num }}</a>
+                {% endif %}
+              {% endfor %}
+            
+              {% if orders.has_next %}
+                <li class="page-item"><a class="page-link" href="?page={{ orders.next_page_number }}">Next</a></li>
+                <li class="page-item"><a class="page-link" href="?page={{ orders.paginator.num_pages }}">Last</a></li>
+              {% endif %}
+            
+            </ul>
+          {% endif %}
+
 
         </div>
     </div>
