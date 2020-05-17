@@ -1,12 +1,79 @@
 {% extends 'accounts/main.html' %}
 
 {% block content %}
+
+<style>
+    @import url(https://fonts.googleapis.com/css?family=Open+Sans:400,600);
+
+    *,
+    *:before,
+    *:after {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        background: #105469;
+        font-family: 'Open Sans', sans-serif;
+    }
+
+    table {
+        background: #012B39;
+        border-radius: 0.25em;
+        border-collapse: collapse;
+        margin: 1em;
+    }
+
+    th {
+        border-bottom: 1px solid #364043;
+        color: #E2B842;
+        font-size: 0.85em;
+        font-weight: 600;
+        padding: 0.5em 1em;
+        text-align: left;
+    }
+
+    td {
+        color: #fff;
+        font-weight: 400;
+        padding: 0.65em 1em;
+    }
+
+    tbody tr {
+        transition: background 0.25s ease;
+    }
+
+    tbody tr:hover {
+        background: #014055;
+    }
+
+    h5 {
+        color: #E2B842;
+        font-weight: 600;
+        text-align: center;
+    }
+    p, h1{
+        color: rgb(240, 240, 240);
+        font-weight: 400;
+    }
+    .card-body{
+        background: #012B39 !important;
+    }
+    form{
+        color: #ffff; 
+        padding: 10px;
+    }
+</style>
+
+
+
 <br>
 
 <div class="row">
     <div class="col-md">
         <div class="card card-body">
-            <h5>Customer:</h5>
+            <h5>Customer</h5>
             <hr>
             <a class="btn btn-outline-info  btn-sm btn-block" href="{% url 'create_order' customer.id %}">Place Order</a>
 
@@ -15,7 +82,7 @@
 
     <div class="col-md">
         <div class="card card-body">
-            <h5>Contact Information</h5>
+            <h5 style="text-align:start">Contact Information</h5>
             <hr>
             <p>Email: {{customer.email}}</p>
             <p>Phone: {{customer.phone}}</p>
@@ -51,7 +118,8 @@
     <div class="col-md">
         <div class="card card-body">
 
-            <table class="table table-sm">
+            <table>
+                <tbody>                                  
                 <tr>
                     <th>Product</th>
                     <th>Note</th>
@@ -59,8 +127,9 @@
                     <th>Status</th>
                     <th>Update</th>
                     <th>Remove</th>
-                </tr>
+                </tbody>
                 {% for order in orders %}
+                <tbody>               
                     <tr>
                         <td>{{order.product}}</td>
                         <td>{{order.note}}</td>
@@ -68,10 +137,35 @@
                         <td>{{order.status}}</td>
                         <td><a class="btn btn-sm btn-info" href="{% url 'update_order' order.id %}">Update</a></td>
                         <td><a class="btn btn-sm btn-danger" href="{% url 'delete_order' order.id %}">Delete</a></td>
-                    </tr>
+                    </tbody>
                 {% endfor %}
 
             </table>
+
+            <!-- ORDERS TABLE PAGINATION -->
+            {% if orders.has_other_pages %}
+            <ul class="pagination justify-content-center">
+            
+                {% if orders.has_previous %}
+                <li class="page-item"><a class="page-link" href="?page=1">First</a></li>
+                <li class="page-item"><a class="page-link" href="?page={{ orders.previous_page_number }}">Previous</a></li>
+                {% endif %}
+            
+                {% for i in orders.paginator.page_range %}
+                {% if orders.number == num %}
+                <li class="page-item active"><span class="page-link">{{ num }} <span class="sr-only">(current)</span></span></li>
+                {% elif num > orders.number|add:'-1' and num < orders.number|add:'1' %}
+                <a class="page-item" href="?page={{ num }}">{{ num }}</a>
+                {% endif %}
+                {% endfor %}
+            
+                {% if orders.has_next %}
+                <li class="page-item"><a class="page-link" href="?page={{ orders.next_page_number }}">Next</a></li>
+                <li class="page-item"><a class="page-link" href="?page={{ orders.paginator.num_pages }}">Last</a></li>
+                {% endif %}
+            
+            </ul>
+            {% endif %}
 
         </div>
     </div>

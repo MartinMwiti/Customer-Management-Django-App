@@ -1,6 +1,76 @@
 {% extends 'accounts/main.html' %}
 
 {% block content %}
+
+<style>
+    @import url(https://fonts.googleapis.com/css?family=Open+Sans:400,600);
+
+    *,
+    *:before,
+    *:after {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        background: #105469;
+        font-family: 'Open Sans', sans-serif;
+    }
+
+    table {
+        background: #012B39;
+        border-radius: 0.25em;
+        border-collapse: collapse;
+        margin: 1em;
+    }
+
+    th {
+        border-bottom: 1px solid #364043;
+        color: #E2B842;
+        font-size: 0.85em;
+        font-weight: 600;
+        padding: 0.5em 1em;
+        text-align: left;
+    }
+
+    td {
+        color: #fff;
+        font-weight: 400;
+        padding: 0.65em 1em;
+    }
+
+    tbody tr {
+        transition: background 0.25s ease;
+    }
+
+    tbody tr:hover {
+        background: #014055;
+    }
+
+    h5 {
+        color: #E2B842;
+        font-weight: 600;
+        text-align: center;
+    }
+
+    p,
+    h1 {
+        color: rgb(240, 240, 240);
+        font-weight: 400;
+    }
+
+    .card-body {
+        background: #012B39 !important;
+    }
+
+    form {
+        color: #ffff;
+        padding: 10px;
+    }
+</style>
+
+
     <br>
     
     <div class="row">
@@ -10,18 +80,20 @@
             </div>
             <div class="card card-body">
 
-                <table class="table">
+                <table>
+                    <tbody>                   
                     <tr>
                         <th>Product</th>
                         <th>Category</th>
                         <th>Price</th>
-                    </tr>
+                    </tbody>
                     {% for i in products %}
+                    <tbody>                   
                         <tr>
                         <td>{{ i.name }}</td>
                         <td>{{ i.category }}</td>
                         <td>{{ i.price }}</td>
-                        </tr>
+                        </tbody>
                     {% endfor %}   
                 </table>
 

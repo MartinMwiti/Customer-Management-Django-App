@@ -7,17 +7,17 @@
 
 <div class="row">
     <div class="col-md-9">
-        <div class="card card-body">
+        <div class="card card-body" style="background: #012B39;">
 
-            <form action="" method="POST">
+            <form action="" method="POST" style="background: #012B39; color: rgb(240, 240, 240);">
                 {% csrf_token %}
                 {{ form.management_form }}
                 {% for field in form %}
                 {{field}}
                 <hr>
                 {% endfor %}
-
-                <input type="submit" name="Submit">
+                <a class="btn btn-warning" href="{% url 'home' %}">Cancel</a>
+                <input class="btn btn-info" type="submit" name="Submit">
             </form>
 
         </div>

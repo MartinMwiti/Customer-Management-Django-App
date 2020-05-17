@@ -100,6 +100,11 @@ def userPage(request):
     delivered = orders.filter(status='Delivered').count()
     pending = orders.filter(status='Pending').count()
 
+    # order table pagination
+    page = request.GET.get('page', 1)
+    paginator = Paginator(orders, 3)
+    orders = paginator.page(page)
+
     context = {"orders": orders, "total_orders": total_orders,
                "delivered": delivered, "pending": pending}
     return render(request, 'accounts/user.html', context)
@@ -152,6 +157,11 @@ def customers(request, pk):
     myFilter = OrderFilter(request.GET, queryset=orders)
     orders = myFilter.qs
 
+    # order table pagination
+    page = request.GET.get('page', 1)
+    paginator = Paginator(orders, 3)
+    orders = paginator.page(page)
+
     context = {"customer": customer,
                "orders": orders, "orders_count": orders_count, "myFilter": myFilter}
     return render(request, 'accounts/customers.html', context)
@@ -189,6 +199,7 @@ def updateOrder(request, pk):
             form = UpdateOrderForm(request.POST, instance=order)
             if form.is_valid():
                 form.save()
+                messages.success(request, 'Order has been updated.')
                 return redirect('/')
 
 	context = {'form': form}
@@ -202,6 +213,7 @@ def deleteOrder(request, pk):
 
     if request.method=="POST":
         order.delete()
+        messages.error(request, 'Order has been deleted.')
         return redirect('/')
     context = {"item":order}
 
