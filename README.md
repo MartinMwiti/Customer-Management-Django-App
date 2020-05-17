@@ -1,4 +1,2 @@
 # Customer-Management-Django-App
-
-### Create a virtual environment
-$ python -m venv venv
+* View to the deployed site here: [link](https://martin-crm-django.herokuapp.com/)
